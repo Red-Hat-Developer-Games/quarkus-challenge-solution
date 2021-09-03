@@ -17,5 +17,15 @@ public class Book extends PanacheEntityBase {
 
    public Integer publicationYear;
 
+    public Integer getId() {
+        return id;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public Integer getPublicationYear() {
+        return publicationYear;
+    }
 }

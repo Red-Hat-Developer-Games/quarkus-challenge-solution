@@ -8,13 +8,11 @@ import java.util.List;
 @ApplicationScoped
 public class BookRepository implements PanacheRepository<Book> {
 
-    // put your custom logic here as instance methods
-
     public Book findByName(String name){
         return find("name", name).firstResult();
     }
 
     public List<Book> findByPublicationYearBetween(Integer lower, Integer higher){
-        return findByPublicationYearBetween(lower,higher);
+        return Book.find("publicationYear >= ?1 and publicationYear <= ?2", lower,higher).list();
     }
 }

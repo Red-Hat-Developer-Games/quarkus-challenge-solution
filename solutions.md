@@ -1,141 +1,27 @@
 ## Solutions
 
-## Minimal Dekorate configuration to generate manifest and deploy on Openshift:
+## Solution 2: using the repository pattern
 
-branch: solution-minimal-dekorate-config
+Guide: https://quarkus.io/guides/hibernate-orm-panache
 
-1 - Add `openshift-spring-starter`
-```
-        <dependency>
-			<groupId>io.dekorate</groupId>
-			<artifactId>openshift-spring-starter</artifactId>
-			<version>2.3-SNAPSHOT</version>
-		</dependency>
-```
+branch: solution-2-repository-pattern
 
-2 - Add `dekorate.openshift.expose=true` in application.properties
-
-3 - Generate manifests and build the image
+1 - Project generation
 ```shell
-mvn clean install -Ddekorate.build=true
+mvn io.quarkus:quarkus-maven-plugin:2.2.1.Final:create \
+    -DprojectGroupId=com.santander.games.challenges.quarkus \
+    -DprojectArtifactId=quarkus-challenge \
+    -DclassName="com.santander.games.challenges.quarkus.BookResource" \
+    -Dpath="/books" \
+    -Dextensions="hibernate-orm-panache, jdbc-postgresql, resteasy-jackson"
 ```
 
-4 - Deploy manifest to the cluster
-```shell
-oc login
-oc apply -f target/classes/META-INF/dekorate/openshift.yml
-```
-or
-```shell
-mvn clean install -Ddekorate.build=true -Ddekorate.deploy=true
-```
-    
-## Bonus: configurate Image Build Strategy
+Trouble shooting:
 
-### With Docker
+2021-09-03 12:34:03,985 ERROR [org.jbo.res.res.i18n] (executor-thread-0) RESTEASY002005: Failed executing GET /books/Sapiens: org.jboss.resteasy.core.NoMessageBodyWriterFoundFailure: Could not find MessageBodyWriter for response object of type: com.santander.games.challenges.quarkus.Book of media type: text/html;charset=UTF-8
+at org.jboss.resteasy.core.ServerResponseWriter.lambda$writeNomapResponse$3(ServerResponseWriter.java:125)
+at org.jboss.resteasy.core.interception.jaxrs.ContainerResponseContextImpl.filter(ContainerResponseContextImpl.java:404)
+at org.jboss.resteasy.core.ServerResponseWriter.executeFilters(ServerResponseWriter.java:252)
+at org.jboss.resteasy.core.ServerResponseWriter.writeNomapResponse(ServerResponseWriter.java:101)
 
-branch: solution-bonus-with-docker
-
-1 - Add dependencies
-```shell
-        <dependency>
-			<groupId>io.dekorate</groupId>
-			<artifactId>openshift-annotations</artifactId>
-			<version>${dekorate.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.dekorate</groupId>
-			<artifactId>docker-annotations</artifactId>
-			<version>${dekorate.version}</version>
-		</dependency>
-```
-
-2 - Anotate the DekorateChallengeApplication class
-
-```java
-@SpringBootApplication
-@S2iBuild(enabled=false)
-@DockerBuild(registry = "docker.io")
-public class DekorateChallengeApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(DekorateChallengeApplication.class, args);
-	}
-
-}
-```
-
-3 - Add a Dockerfile to the root directoy
-
-```dockerfile
-FROM openjdk:15.0.2-slim-buster
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
-EXPOSE 8080
-ENTRYPOINT ["java","-jar","/app.jar"]
-```
-
-4 - Generate manifests and build the image
-```shell
-mvn clean install -Ddekorate.build=true
-```
-
-5 - Push the image
-```shell
-docker login
-docker push amunozhe/dekorate-challenge:2.3-SNAPSHOT
-```
-
-6 - Deploy manifest
-```shell
-oc login
-oc apply -f target/classes/META-INF/dekorate/openshift.yml
-```
-
-7 - All in a single step
-```shell
-mvn clean install -Ddekorate.build=true -Ddekorate.push=true -Ddekorate.deploy=true
-```
-
-### With Jib
-
-branch: solution-bonus-with-docker
-
-1 - Add dependencies
-```shell
-       <dependency>
-			<groupId>io.dekorate</groupId>
-			<artifactId>jib-annotations</artifactId>
-			<version>${dekorate.version}</version>
-		</dependency>
-```
-
-2 - Anotate the DekorateChallengeApplication class
-
-```java
-@SpringBootApplication
-@S2iBuild(enabled=false)
-@JibBuild(registry = "docker.io")
-public class DekorateChallengeApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(DekorateChallengeApplication.class, args);
-	}
-
-}
-```
-3 - Generate manifests and build+push the image
-```shell
-mvn clean install -Ddekorate.build=true -Ddekorate.push=true
-```
-
-4 - Deploy manifest
-```shell
-oc login
-oc apply -f target/classes/META-INF/dekorate/openshift.yml
-```
-
-5 - All in a single step
-```shell
-mvn clean install -Ddekorate.build=true -Ddekorate.push=true -Ddekorate.deploy=true
-```
+El problema era que faltaba el mediatype en el resource method: @Produces(MediaType.APPLICATION_JSON)
