@@ -15,6 +15,22 @@ mvn io.quarkus:quarkus-maven-plugin:2.2.1.Final:create \
     -Dpath="/books" \
     -Dextensions="hibernate-orm-panache, jdbc-postgresql, resteasy-jackson"
 ```
+Database:
+
+```shell
+#%prod.quarkus.datasource.jdbc.url=jdbc:postgresql://library-database.user150-quarkus-challenge:5432/library_database
+#locally
+quarkus.datasource.jdbc.url=jdbc:postgresql://localhost:5432/library_database
+quarkus.datasource.db-kind=postgresql
+quarkus.datasource.username=book
+quarkus.datasource.password=book
+quarkus.datasource.max-size=8
+quarkus.datasource.min-size=2
+quarkus.hibernate-orm.sql-load-script=import.sql
+
+quarkus.hibernate-orm.database.generation=drop-and-create
+```
+
 
 Trouble shooting:
 
@@ -25,3 +41,13 @@ at org.jboss.resteasy.core.ServerResponseWriter.executeFilters(ServerResponseWri
 at org.jboss.resteasy.core.ServerResponseWriter.writeNomapResponse(ServerResponseWriter.java:101)
 
 El problema era que faltaba el mediatype en el resource method: @Produces(MediaType.APPLICATION_JSON)
+
+== Running DBs locally with Docker
+docker run --ulimit memlock=-1:-1 -it --rm=true --memory-swappiness=0 --name library-database -e POSTGRES_USER=book -e POSTGRES_PASSWORD=book -e POSTGRES_DB=library_database -p 5432:5432 postgres:11.5
+
+
+Deploy
+
+Si es desde la maquina local, saltar los tests pq da error de no conexion a la Database, no la ve porque esta en openshift
+./mvnw clean package -Dquarkus.kubernetes.deploy=true
+
