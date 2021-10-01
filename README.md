@@ -35,10 +35,15 @@ CodeReady Workspaces is a collaborative Kubernetes-native development solution t
 - Once the CRW creation done, access to your CRW and sign up with your own user (selected previously) and full fill the form:
 
   user: USERNAME
+  
   pwd: openshift
+  
   email: USERNAME@ocp.com
+  
   first name: John
+  
   last name: Sanchez
+
 
 If everything goes well, you should have land to the Workspace creation page:
 
