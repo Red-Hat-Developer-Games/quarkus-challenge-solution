@@ -26,12 +26,16 @@ public class BookResourceTest {
                 .when().get("/books")
                 .then()
                 .statusCode(200)
+                .body(Matchers.containsString("Sapiens"))
                 .body(Matchers.containsString("Homo Deus"))
                 .body(Matchers.containsString("Enlightenment Now"))
                 .body(Matchers.containsString("Factfulness"))
                 .body(Matchers.containsString("Sleepwalkers"))
-                .body(Matchers.containsString("Sapiens"))
-                .body(Matchers.containsString("The Silk Roads"));
+                .body(Matchers.containsString("The Silk Roads"))
+                .body(Matchers.containsString("The culture map"))
+                .body(Matchers.containsString("Billy Summers"))
+                .body(Matchers.containsString("The Handmaids Tale"))
+                .body(Matchers.containsString("The Institue"));
     }
 
     @Test
