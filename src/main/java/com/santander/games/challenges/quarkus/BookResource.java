@@ -11,9 +11,6 @@ import java.util.List;
 @Path("/books")
 public class BookResource {
 
-    @Inject
-    private BookRepository bookRepository;
-
     @GET
     @Path("/hello")
     @Produces(MediaType.TEXT_PLAIN)
@@ -29,15 +26,24 @@ public class BookResource {
 
     @GET
     @Path("/{lower}/{higher}")
-    @Produces
+    @Produces(MediaType.APPLICATION_JSON)
     public List<Book> findByPublicationYear(@PathParam("lower")Integer lower, @PathParam("higher") Integer higher){
-        return bookRepository.findByPublicationYearBetween(lower,higher);
+        return Book.findByPublicationYearBetween(lower,higher);
+    }
+
+
+
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Book findById(@PathParam("id")Integer id){
+        return Book.findById(1);
     }
 
     @GET
-    @Path("/{name}")
-    @Produces
+    @Path("/name/{name}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Book findByName(@PathParam("name")String name){
-        return bookRepository.findByName(name);
+        return Book.findByName(name);
     }
 }
