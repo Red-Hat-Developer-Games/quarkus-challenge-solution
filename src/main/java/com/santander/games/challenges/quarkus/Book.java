@@ -11,13 +11,13 @@ import javax.persistence.Id;
 public class Book extends PanacheEntityBase {
 
     @Id
-    private Integer id;
+    private Long id;
 
    public String name;
 
    public Integer publicationYear;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 

@@ -35,7 +35,14 @@ public class BookResource {
     }
 
     @GET
-    @Path("/{name}")
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Book findById(@PathParam("id")Long id){
+        return bookRepository.findById(id);
+    }
+
+    @GET
+    @Path("/name/{name}")
     @Produces(MediaType.APPLICATION_JSON)
     public Book findByName(@PathParam("name")String name){
         return bookRepository.findByName(name);

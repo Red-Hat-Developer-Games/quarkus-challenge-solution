@@ -41,7 +41,16 @@ public class BookResourceTest {
     @Test
     public void testBookByNameEndpoint() {
         given()
-                .when().get("/books/Sapiens")
+                .when().get("/books/name/Sapiens")
+                .then()
+                .statusCode(200)
+                .body(Matchers.containsString("Sapiens"));
+    }
+
+    @Test
+    public void testBookByIdEndpoint() {
+        given()
+                .when().get("/books/1")
                 .then()
                 .statusCode(200)
                 .body(Matchers.containsString("Sapiens"));
