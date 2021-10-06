@@ -3,7 +3,7 @@ package com.santander.games.challenges.quarkus;
 import io.quarkus.test.junit.NativeImageTest;
 
 @NativeImageTest
-public class NativeBookResourceIT extends BookResourceTest {
+public class NativeBookControllerIT extends BookControllerTest {
 
     // Execute the same tests but in native mode.
 }

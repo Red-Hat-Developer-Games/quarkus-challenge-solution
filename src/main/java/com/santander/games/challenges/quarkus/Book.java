@@ -1,23 +1,20 @@
 package com.santander.games.challenges.quarkus;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Book extends PanacheEntityBase {
+public class Book {
 
     @Id
-    private Long id;
+    private Integer id;
 
-   public String name;
+   private String name;
 
-   public Integer publicationYear;
+   private Integer publicationYear;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 

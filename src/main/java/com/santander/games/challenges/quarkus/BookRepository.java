@@ -1,18 +1,14 @@
 package com.santander.games.challenges.quarkus;
 
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import org.springframework.data.repository.CrudRepository;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
+import java.util.Optional;
 
-@ApplicationScoped
-public class BookRepository implements PanacheRepository<Book> {
+public interface BookRepository extends CrudRepository<Book, Integer> {
 
-    public Book findByName(String name){
-        return find("name", name).firstResult();
-    }
 
-    public List<Book> findByPublicationYearBetween(Integer lower, Integer higher){
-        return Book.find("publicationYear >= ?1 and publicationYear <= ?2", lower,higher).list();
-    }
+    List<Book> findByPublicationYearBetween(Integer lower, Integer higher);
+
+    Optional<Book> findByName(String name);
 }
