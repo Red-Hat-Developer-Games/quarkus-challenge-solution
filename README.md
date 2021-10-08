@@ -145,7 +145,7 @@ Quarkus provides a compatibility layer for Spring Data JPA repositories in the f
 First, you need a new project. The easiest way to create a new Quarkus project is to open a terminal and run the following command:
 
 ```shell
-mvn io.quarkus.platform:quarkus-maven-plugin:2.2.1.Final:create \
+mvn io.quarkus.platform:quarkus-maven-plugin:2.3.0.Final:create \
     -DprojectGroupId=org.acme \
     -DprojectArtifactId=quarkus-challenge \
     -DclassName="org.acme.getting.started.GreetingResource" \
