@@ -41,6 +41,13 @@ public class BookResource {
         return bookRepository.findById(id);
     }
 
+    @DELETE
+    @Path("/deleteById/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void deleteById(@PathParam("id")Long id){
+        bookRepository.deleteById(id);
+    }
+
     @GET
     @Path("/name/{name}")
     @Produces(MediaType.APPLICATION_JSON)
